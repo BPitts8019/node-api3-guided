@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
-const morgan = require("morgan");
+const logger = require("./middleware/logger");
+// const morgan = require("morgan");
 const PORT = 8080;
 const hubRouter = require("./routers/hub");
 const welcomeRouter = require("./routers/welcome");
@@ -8,7 +9,8 @@ const welcomeRouter = require("./routers/welcome");
 const server = express();
 
 server.use(helmet());
-server.use(morgan("short"));
+server.use(logger());
+// server.use(morgan("short"));
 server.use(express.json());
 // Bring all our subroutes into the main application
 // (Remember, subroutes can have more children routers)
