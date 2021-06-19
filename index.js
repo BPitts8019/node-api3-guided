@@ -1,15 +1,20 @@
-const express = require("express")
-const hubRouter = require("./routers/hub")
-const welcomeRouter = require("./routers/welcome")
+const express = require("express");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const PORT = 8080;
+const hubRouter = require("./routers/hub");
+const welcomeRouter = require("./routers/welcome");
 
-const server = express()
+const server = express();
 
-server.use(express.json())
+server.use(helmet());
+server.use(morgan("short"));
+server.use(express.json());
 // Bring all our subroutes into the main application
 // (Remember, subroutes can have more children routers)
-server.use("/", welcomeRouter)
-server.use("/api/hubs", hubRouter)
+server.use("/", welcomeRouter);
+server.use("/api/hubs", hubRouter);
 
-server.listen(4000, () => {
-  console.log("\n*** Server Running on http://localhost:4000 ***\n")
-})
+server.listen(PORT, () => {
+   console.log("\n*** Server Running on http://localhost:8080 ***\n");
+});
