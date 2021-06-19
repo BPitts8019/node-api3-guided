@@ -56,7 +56,7 @@ router.post("/", (req, res) => {
       });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateHubId(), (req, res) => {
    if (!req.body.name) {
       return res.status(400).json({ message: "Missing hub name" });
    }
@@ -64,11 +64,7 @@ router.put("/:id", (req, res) => {
    hubs
       .update(req.params.id, req.body)
       .then((hub) => {
-         if (hub) {
-            res.status(200).json(hub);
-         } else {
-            res.status(404).json({ message: "The hub could not be found" });
-         }
+         res.status(200).json(hub);
       })
       .catch((error) => {
          console.log(error);
@@ -78,15 +74,11 @@ router.put("/:id", (req, res) => {
       });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateHubId(), (req, res) => {
    hubs
       .remove(req.params.id)
       .then((count) => {
-         if (count > 0) {
-            res.status(200).json({ message: "The hub has been nuked" });
-         } else {
-            res.status(404).json({ message: "The hub could not be found" });
-         }
+         res.status(200).json({ message: "The hub has been nuked" });
       })
       .catch((error) => {
          console.log(error);
