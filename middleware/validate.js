@@ -19,6 +19,15 @@ const validateHubId = () => (req, res, next) => {
       });
 };
 
+const validateHubData = () => (req, res, next) => {
+   if (!req.body.name) {
+      return res.status(400).json({ message: "Missing hub name" });
+   }
+
+   next();
+};
+
 module.exports = {
    validateHubId,
+   validateHubData,
 };

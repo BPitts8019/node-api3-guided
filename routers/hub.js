@@ -1,7 +1,7 @@
 const express = require("express");
 const messageRouter = require("./message");
 const hubs = require("../hubs/hubs-model.js");
-const { validateHubId } = require("../middleware/validate");
+const { validateHubId, validateHubData } = require("../middleware/validate");
 
 // Creates a new router, or "sub-application" within our app
 // Routers can have their own endpoints, middleware, etc.
@@ -38,11 +38,7 @@ router.get("/:id", validateHubId(), (req, res) => {
    res.json(req.hub);
 });
 
-router.post("/", (req, res) => {
-   if (!req.body.name) {
-      return res.status(400).json({ message: "Missing hub name" });
-   }
-
+router.post("/", validateHubData(), (req, res) => {
    hubs
       .add(req.body)
       .then((hub) => {
@@ -56,11 +52,7 @@ router.post("/", (req, res) => {
       });
 });
 
-router.put("/:id", validateHubId(), (req, res) => {
-   if (!req.body.name) {
-      return res.status(400).json({ message: "Missing hub name" });
-   }
-
+router.put("/:id", validateHubData(), validateHubId(), (req, res) => {
    hubs
       .update(req.params.id, req.body)
       .then((hub) => {
