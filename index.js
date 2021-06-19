@@ -15,6 +15,10 @@ server.use(express.json());
 server.use("/", welcomeRouter);
 server.use("/api/hubs", hubRouter);
 
+server.use((req, res) => {
+   res.status(404).json({ message: "Page not found!" });
+});
+
 server.listen(PORT, () => {
    console.log("\n*** Server Running on http://localhost:8080 ***\n");
 });
