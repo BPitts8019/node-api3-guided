@@ -23,6 +23,11 @@ server.use((req, res) => {
    res.status(404).json({ message: "Page not found!" });
 });
 
+server.use((error, req, res, next) => {
+   console.error(error);
+   res.status(500).json({ message: "An internal error occured" });
+});
+
 server.listen(PORT, () => {
    console.log("\n*** Server Running on http://localhost:8080 ***\n");
 });

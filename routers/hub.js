@@ -12,7 +12,7 @@ router.use("/:id/messages", messageRouter);
 
 // The endpoint is built off of the parent router's endpoint.
 // So this endpoint is accessed at /api/hubs/:id
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
    const opts = {
       // These values all comes from the URL's query string
       // (everthing after the question mark)
@@ -27,10 +27,7 @@ router.get("/", (req, res) => {
          res.status(200).json(hubs);
       })
       .catch((error) => {
-         console.log(error);
-         res.status(500).json({
-            message: "Error retrieving the hubs",
-         });
+         next(error);
       });
 });
 
@@ -38,45 +35,36 @@ router.get("/:id", validateHubId(), (req, res) => {
    res.json(req.hub);
 });
 
-router.post("/", validateHubData(), (req, res) => {
+router.post("/", validateHubData(), (req, res, next) => {
    hubs
       .add(req.body)
       .then((hub) => {
          res.status(201).json(hub);
       })
       .catch((error) => {
-         console.log(error);
-         res.status(500).json({
-            message: "Error adding the hub",
-         });
+         next(error);
       });
 });
 
-router.put("/:id", validateHubData(), validateHubId(), (req, res) => {
+router.put("/:id", validateHubData(), validateHubId(), (req, res, next) => {
    hubs
       .update(req.params.id, req.body)
       .then((hub) => {
          res.status(200).json(hub);
       })
       .catch((error) => {
-         console.log(error);
-         res.status(500).json({
-            message: "Error updating the hub",
-         });
+         next(error);
       });
 });
 
-router.delete("/:id", validateHubId(), (req, res) => {
+router.delete("/:id", validateHubId(), (req, res, next) => {
    hubs
       .remove(req.params.id)
       .then((count) => {
          res.status(200).json({ message: "The hub has been nuked" });
       })
       .catch((error) => {
-         console.log(error);
-         res.status(500).json({
-            message: "Error removing the hub",
-         });
+         next(error);
       });
 });
 

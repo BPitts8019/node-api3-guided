@@ -12,10 +12,7 @@ const validateHubId = () => (req, res, next) => {
          }
       })
       .catch((error) => {
-         console.log(error);
-         res.status(500).json({
-            message: "Error retrieving the hub",
-         });
+         next(error);
       });
 };
 
